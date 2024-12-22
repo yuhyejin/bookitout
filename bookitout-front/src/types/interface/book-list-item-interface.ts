@@ -4,5 +4,7 @@ export default interface BookListItem {
     author: string;
     collLibrary: string;
     isBookLoan: string;
+    isBookReservation: string;
     returnDate: string | null;
+    bookImage: string | null;
 }

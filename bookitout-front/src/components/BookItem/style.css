@@ -1,0 +1,85 @@
+.book-list-item {
+    padding: 10px;
+    background-color: rgb(255, 255, 255, 1);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    cursor: pointer;
+}
+
+.book-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.book-list-item-number {
+    padding-left: 20px;
+    font-size: 16px;
+}
+
+.book-list-item-image-box {
+    width: 158px;
+    height: 230px;
+}
+
+.book-list-item-image {
+    width: 100%;
+    height: 100%;
+
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.book-list-item-main-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.book-list-item-top {
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.book-list-item-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 140%;
+}
+
+.book-list-item-middle {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 30px;
+}
+
+.book-list-item-text-box {
+    display: flex;
+    align-items: center;
+}
+
+.book-list-item-text {
+    color: rgba(68, 131, 97, 1);
+    font-size: 16px;
+    line-height: 130%;
+    margin-right: 5px;
+}
+
+.book-list-item-text-value {
+    color: rgba(0, 0, 0, 1);
+    font-size: 16px;
+    line-height: 130%;
+}
+
+.book-list-item-goLoanBook {
+    background-color: rgba(246, 246, 246, 1);
+    border: 1px solid rgba(220, 220, 220, 1);
+    border-radius: 3px;
+    color: rgba(125, 125, 125, 1);
+    font-size: 14px;
+    line-height: 120%;
+    padding: 5px 15px;
+    margin-top: 5px;
+}
