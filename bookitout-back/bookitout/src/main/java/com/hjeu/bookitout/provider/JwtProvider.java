@@ -34,10 +34,10 @@ public class JwtProvider {
         Date expiry = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
         return Jwts.builder()
-                .setSubject(userId)
                 .setIssuedAt(new Date())
                 .setExpiration(expiry)
-                .addClaims(Map.of("role", role))
+                .claim("userId", userId)
+                .claim("role", "USER")
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -50,6 +50,8 @@ public class JwtProvider {
                 .setSubject(userId)
                 .setIssuedAt(new Date())
                 .setExpiration(expiry)
+                .claim("userId", userId)
+                .claim("role", "USER")
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -70,12 +72,14 @@ public class JwtProvider {
         }
     }
 
-    // 토큰에서 role 같은 클레임 꺼내기
-    public Claims getAllClaims(String token) {
-        return Jwts.parserBuilder()
+    // 클레임에서 userId 직접 꺼내기
+    public String extractUserId(String token) {
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        return claims.get("userId", String.class);
     }
 }

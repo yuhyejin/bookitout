@@ -76,4 +76,10 @@ public class UserServiceImpl implements UserService {
         String newAccessToken = jwtProvider.createAccessToken(userId, "USER");
         return new TokenResponseVO(newAccessToken, refreshToken); // refresh는 그대로 유지
     }
+
+    // 로그아웃
+    @Override
+    public void logout(String userId) {
+        refreshTokenRedisRepository.deleteById(userId);
+    }
 }

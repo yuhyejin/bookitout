@@ -9,4 +9,6 @@ public interface UserService {
     TokenResponseVO login(UserDTO userDTO);
 
     TokenResponseVO reissue(String refreshToken);
+
+    void logout(String userId);
 }
