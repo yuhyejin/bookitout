@@ -4,4 +4,6 @@ import com.hjeu.bookitout.user.dto.UserDTO;
 
 public interface UserService {
     void signup(UserDTO userDTO);
+
+    String login(UserDTO userDTO);
 }
