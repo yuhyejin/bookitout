@@ -9,4 +9,6 @@ public interface LibraryFavoriteService {
     void addFavoriteLibrary(LibraryFavoriteDTO dto);
 
     List<LibraryFavoriteResponseVO> getLibraryFavorite(String userId);
+
+    void deleteFavorite(Long libId, String userId);
 }

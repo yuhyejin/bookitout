@@ -37,4 +37,12 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
                 .map(f -> new LibraryFavoriteResponseVO(f.getLibName(), f.getLibUrl()))
                 .toList();
     }
+
+    @Override
+    public void deleteFavorite(Long libId, String userId) {
+        LibraryFavorite favorite = libraryFavoriteRepository.findByLibIdAndUserId(libId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 즐겨찾기를 찾을 수 없습니다."));
+        favorite.deactivate();
+        libraryFavoriteRepository.save(favorite);
+    }
 }

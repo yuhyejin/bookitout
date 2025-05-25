@@ -41,4 +41,8 @@ public class LibraryFavorite {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public void deactivate() {
+        this.status = false;
+    }
 }

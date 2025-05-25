@@ -5,6 +5,7 @@ import com.hjeu.bookitout.library_favorite.service.LibraryFavoriteService;
 import com.hjeu.bookitout.library_favorite.vo.request.LibraryFavoriteRequestVO;
 import com.hjeu.bookitout.library_favorite.vo.response.LibraryFavoriteResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,17 @@ public class LibraryFavoriteController {
     public ResponseEntity<?> getLibraryFavorite(@AuthenticationPrincipal String userId) {
         List<LibraryFavoriteResponseVO> favorites = libraryFavoriteService.getLibraryFavorite(userId);
         return ResponseEntity.ok(favorites);
+    }
+
+    // 도서관 즐겨찾기 삭제
+    @PatchMapping("/favorite/{libId}")
+    public ResponseEntity<?> deleteFavorite(@PathVariable Long libId,
+                                            @AuthenticationPrincipal String userId) {
+        try {
+            libraryFavoriteService.deleteFavorite(libId, userId);
+            return ResponseEntity.ok("도서관 즐겨찾기 삭제 완료");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
