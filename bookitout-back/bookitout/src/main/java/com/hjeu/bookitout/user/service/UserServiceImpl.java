@@ -1,9 +1,12 @@
 package com.hjeu.bookitout.user.service;
 
 import com.hjeu.bookitout.provider.JwtProvider;
+import com.hjeu.bookitout.user.domain.RefreshToken;
 import com.hjeu.bookitout.user.domain.User;
 import com.hjeu.bookitout.user.dto.UserDTO;
+import com.hjeu.bookitout.user.repository.RefreshTokenRedisRepository;
 import com.hjeu.bookitout.user.repository.UserRepository;
+import com.hjeu.bookitout.user.vo.response.TokenResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,12 +15,14 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
+    public UserServiceImpl(UserRepository userRepository, RefreshTokenRedisRepository refreshTokenRedisRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
         this.userRepository = userRepository;
+        this.refreshTokenRedisRepository = refreshTokenRedisRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
     }
@@ -36,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     // 로그인
     @Override
-    public String login(UserDTO userDTO) {
+    public TokenResponseVO login(UserDTO userDTO) {
         User user = userRepository.findByUserId(userDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
 
@@ -44,6 +49,31 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return jwtProvider.createA(user.getUserId());
+        String accessToken = jwtProvider.createAccessToken(user.getUserId(), "USER");
+        String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
+
+        // Redis에 저장
+        refreshTokenRedisRepository.save(RefreshToken.builder()
+                .userId(user.getUserId())
+                .token(refreshToken)
+                .build());
+
+        return new TokenResponseVO(accessToken, refreshToken);
+    }
+
+    // RefreshToken을 이용한 재발급
+    public TokenResponseVO reissue(String refreshToken) {
+        String userId = jwtProvider.validate(refreshToken);
+        if (userId == null) throw new IllegalArgumentException("유효하지 않은 토큰");
+
+        RefreshToken saved = refreshTokenRedisRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("리프레시 토큰이 존재하지 않음"));
+
+        if (!saved.getToken().equals(refreshToken)) {
+            throw new IllegalArgumentException("토큰 불일치");
+        }
+
+        String newAccessToken = jwtProvider.createAccessToken(userId, "USER");
+        return new TokenResponseVO(newAccessToken, refreshToken); // refresh는 그대로 유지
     }
 }

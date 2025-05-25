@@ -4,13 +4,11 @@ import com.hjeu.bookitout.user.dto.UserDTO;
 import com.hjeu.bookitout.user.service.UserService;
 import com.hjeu.bookitout.user.vo.request.LoginRequestVO;
 import com.hjeu.bookitout.user.vo.request.SignupRequestVO;
+import com.hjeu.bookitout.user.vo.response.TokenResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -49,8 +47,19 @@ public class AuthController {
                     .userId(loginRequestVO.getUserId())
                     .password(loginRequestVO.getPassword())
                     .build();
-            String token = userService.login(userDTO);
-            return ResponseEntity.ok(Map.of("token", token));
+            TokenResponseVO tokens = userService.login(userDTO);
+            return ResponseEntity.ok(tokens);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    // RefreshToken을 이용한 재발급
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@RequestHeader("Refresh-Token") String refreshToken) {
+        try {
+            TokenResponseVO newTokens = userService.reissue(refreshToken);
+            return ResponseEntity.ok(newTokens);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
