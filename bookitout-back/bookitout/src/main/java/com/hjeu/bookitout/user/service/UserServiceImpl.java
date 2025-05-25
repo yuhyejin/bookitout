@@ -44,6 +44,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        return jwtProvider.create(user.getUserId());
+        return jwtProvider.createA(user.getUserId());
     }
 }

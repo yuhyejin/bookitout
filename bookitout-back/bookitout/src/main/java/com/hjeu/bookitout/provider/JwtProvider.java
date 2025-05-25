@@ -13,6 +13,7 @@ import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtProvider {
@@ -29,8 +30,21 @@ public class JwtProvider {
     }
 
     // 토큰 생성
-    public String create(String userId) {
+    public String createAccessToken(String userId, String role) {
         Date expiry = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
+
+        return Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(expiry)
+                .addClaims(Map.of("role", role))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // 리프레시 토큰 발급
+    public String createRefreshToken(String userId) {
+        Date expiry = Date.from(Instant.now().plus(14, ChronoUnit.DAYS)); // 2주
 
         return Jwts.builder()
                 .setSubject(userId)
@@ -54,5 +68,14 @@ public class JwtProvider {
             e.printStackTrace();
             return null;
         }
+    }
+
+    // 토큰에서 role 같은 클레임 꺼내기
+    public Claims getAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
