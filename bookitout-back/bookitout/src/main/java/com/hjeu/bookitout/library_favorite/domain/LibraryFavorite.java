@@ -1,4 +1,4 @@
-package com.hjeu.bookitout.LibraryFavorite.domain;
+package com.hjeu.bookitout.library_favorite.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "library_favorite")
+@Table(name = "tb_lib_favorite")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,8 +25,14 @@ public class LibraryFavorite {
     @Column(name = "lib_url", nullable = false)
     private String libUrl;
 
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     @Column(name = "user_id", nullable = false)
     private String userId;
