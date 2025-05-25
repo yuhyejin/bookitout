@@ -4,6 +4,9 @@ import com.hjeu.bookitout.library_favorite.domain.LibraryFavorite;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface LibraryFavoriteRepository extends JpaRepository<LibraryFavorite, Long> {
+    List<LibraryFavorite> findByUserIdAndStatusTrue(String userId);
 }

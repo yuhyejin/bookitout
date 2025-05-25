@@ -3,8 +3,11 @@ package com.hjeu.bookitout.library_favorite.service;
 import com.hjeu.bookitout.library_favorite.domain.LibraryFavorite;
 import com.hjeu.bookitout.library_favorite.dto.LibraryFavoriteDTO;
 import com.hjeu.bookitout.library_favorite.repository.LibraryFavoriteRepository;
+import com.hjeu.bookitout.library_favorite.vo.response.LibraryFavoriteResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
@@ -25,5 +28,13 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
                 .status(true)
                 .build();
         libraryFavoriteRepository.save(favorite);
+    }
+
+    @Override
+    public List<LibraryFavoriteResponseVO> getLibraryFavorite(String userId) {
+        List<LibraryFavorite> list = libraryFavoriteRepository.findByUserIdAndStatusTrue(userId);
+        return list.stream()
+                .map(f -> new LibraryFavoriteResponseVO(f.getLibName(), f.getLibUrl()))
+                .toList();
     }
 }
