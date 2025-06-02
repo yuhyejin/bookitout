@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/library")
+@RequestMapping("/api/v1/library-favorite")
 public class LibraryFavoriteController {
 
     private final LibraryFavoriteService libraryFavoriteService;

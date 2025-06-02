@@ -14,3 +14,7 @@ spring:
       port: ${REDIS_PORT}
 
 secret-key: ${SECRET_KEY}
+
+library:
+  api:
+    key: ${LIBRARY_API_KEY}
