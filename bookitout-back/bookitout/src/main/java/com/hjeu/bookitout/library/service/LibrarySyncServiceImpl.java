@@ -4,6 +4,7 @@ import com.hjeu.bookitout.library.domain.Library;
 import com.hjeu.bookitout.library.dto.LibraryOpenApiResponse;
 import com.hjeu.bookitout.library.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class LibrarySyncServiceImpl implements LibrarySyncService {
     private String apiKey;
 
     @Autowired
-    public LibrarySyncServiceImpl(LibraryRepository libraryRepository, WebClient webClient) {
+    public LibrarySyncServiceImpl(LibraryRepository libraryRepository, @Qualifier("libraryApiWebClient") WebClient webClient) {
         this.libraryRepository = libraryRepository;
         this.webClient = webClient;
     }

@@ -17,4 +17,16 @@ public class WebClientConfig {
                         .build())
                 .build();
     }
+
+    @Bean
+    public WebClient libraryCrawlerApiWebClient() {
+        return WebClient.builder()
+//                .baseUrl("http://localhost:8000") // Flask 서버
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer
+                                .defaultCodecs()
+                                .maxInMemorySize(5 * 1024 * 1024)) // 5MB로 설정
+                        .build())
+                .build();
+    }
 }

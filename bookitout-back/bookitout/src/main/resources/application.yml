@@ -18,3 +18,7 @@ secret-key: ${SECRET_KEY}
 library:
   api:
     key: ${LIBRARY_API_KEY}
+
+crawler:
+  api:
+    url: ${CRAWLER_API_URL}
