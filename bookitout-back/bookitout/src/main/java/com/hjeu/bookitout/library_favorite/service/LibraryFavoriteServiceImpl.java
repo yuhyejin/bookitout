@@ -15,14 +15,25 @@ import java.util.List;
 public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
 
     private final LibraryFavoriteRepository libraryFavoriteRepository;
+    private final EmailService emailService;
 
     @Autowired
-    public LibraryFavoriteServiceImpl(LibraryFavoriteRepository libraryFavoriteRepository) {
+    public LibraryFavoriteServiceImpl(LibraryFavoriteRepository libraryFavoriteRepository, EmailService emailService) {
         this.libraryFavoriteRepository = libraryFavoriteRepository;
+        this.emailService = emailService;
     }
 
     @Override
-    public void addFavoriteLibrary(LibraryFavoriteDTO dto) {
+    public boolean addFavoriteLibrary(LibraryFavoriteDTO dto) {
+        boolean exists = libraryFavoriteRepository.existsByLibName(dto.getLibName());
+
+        if (!exists) {
+            // 관리자에게 메일 전송
+            String subject = "[도서관 등록 요청 알림]";
+            String content = String.format("사용자 [%s]가 등록되지 않은 도서관 [%s (%s)]을 즐겨찾기 등록했습니다.",
+                    dto.getUserId(), dto.getLibName(), dto.getLibUrl());
+            emailService.sendToAdmin(subject, content);
+        }
         LibraryFavorite favorite = LibraryFavorite.builder()
                 .userId(dto.getUserId())
                 .libName(dto.getLibName())
@@ -30,6 +41,7 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
                 .status(true)
                 .build();
         libraryFavoriteRepository.save(favorite);
+        return exists;
     }
 
     @Override

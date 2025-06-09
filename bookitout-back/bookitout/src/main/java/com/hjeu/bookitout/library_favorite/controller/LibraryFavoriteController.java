@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/library-favorite")
@@ -32,8 +34,13 @@ public class LibraryFavoriteController {
                         .libName(request.getLibName())
                         .libUrl(request.getLibUrl())
                         .build();
-        libraryFavoriteService.addFavoriteLibrary(dto);
-        return ResponseEntity.ok("도서관 즐겨찾기 등록 완료");
+
+        boolean existsInLibrary = libraryFavoriteService.addFavoriteLibrary(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "도서관 즐겨찾기 등록 완료");
+        result.put("existsInLibrary", existsInLibrary);
+        return ResponseEntity.ok(result);
     }
 
     // 도서관 즐겨찾기 조회
