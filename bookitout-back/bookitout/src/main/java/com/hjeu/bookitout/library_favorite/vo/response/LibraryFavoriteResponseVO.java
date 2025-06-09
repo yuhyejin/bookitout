@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class LibraryFavoriteResponseVO {
+    private Long libId;
     private String libName;
     private String libUrl;
 }

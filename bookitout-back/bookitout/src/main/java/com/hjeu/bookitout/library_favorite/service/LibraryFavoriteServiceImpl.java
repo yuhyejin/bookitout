@@ -36,7 +36,7 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
     public List<LibraryFavoriteResponseVO> getLibraryFavorite(String userId) {
         List<LibraryFavorite> list = libraryFavoriteRepository.findByUserIdAndStatusTrue(userId);
         return list.stream()
-                .map(f -> new LibraryFavoriteResponseVO(f.getLibName(), f.getLibUrl()))
+                .map(f -> new LibraryFavoriteResponseVO(f.getLibId(), f.getLibName(), f.getLibUrl()))
                 .toList();
     }
 

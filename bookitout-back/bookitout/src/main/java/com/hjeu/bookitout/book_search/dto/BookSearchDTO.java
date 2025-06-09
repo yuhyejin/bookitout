@@ -17,4 +17,5 @@ public class BookSearchDTO {
     private String return_date;
     private String reservation;
     private String libraryName;
+    private String image_url;
 }
