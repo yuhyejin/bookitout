@@ -16,4 +16,6 @@ public interface LibraryFavoriteRepository extends JpaRepository<LibraryFavorite
 
     @Query("SELECT lf.libName FROM LibraryFavorite lf WHERE lf.userId = :userId AND lf.status = true")
     List<String> findLibNamesByUserId(String userId);
+
+    boolean existsByLibName(String libName);
 }
