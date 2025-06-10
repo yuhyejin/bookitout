@@ -119,7 +119,9 @@ const Register = () => {
           </div>
         </form>
         <div className="text-center text-sm text-gray-600 mt-4">
-          이미 계정이 있으신가요? <Link to="/" className="font-medium text-purple-600 hover:text-purple-500">로그인</Link>
+          <Link to="/login" className="text-purple-600 hover:text-purple-800">
+            이미 계정이 있으신가요? 로그인
+          </Link>
         </div>
       </div>
 
