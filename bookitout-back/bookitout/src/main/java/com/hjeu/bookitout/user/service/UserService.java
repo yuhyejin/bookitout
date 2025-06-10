@@ -13,4 +13,6 @@ public interface UserService {
     void logout(String userId);
 
     void checkId(String userId);
+
+    void checkNickname(String nickname);
 }

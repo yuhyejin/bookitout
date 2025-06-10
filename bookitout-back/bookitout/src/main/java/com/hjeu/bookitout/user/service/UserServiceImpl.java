@@ -93,4 +93,12 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         });
     }
+
+    // 닉네임 중복확인
+    @Override
+    public void checkNickname(String nickname) {
+        userRepository.findByNickname(nickname).ifPresent(user -> {
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        });
+    }
 }
