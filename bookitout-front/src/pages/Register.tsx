@@ -20,11 +20,44 @@ const Register = () => {
   const [isNicknameAvailable, setIsNicknameAvailable] = useState<boolean | null>(null);
   const [nicknameCheckMessage, setNicknameCheckMessage] = useState('');
 
+  // 유효성 검사 상태
+  const [isIdValid, setIsIdValid] = useState<boolean | null>(null);
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean | null>(null);
+  const [idValidationMessage, setIdValidationMessage] = useState('');
+  const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
+
+  // 아이디 유효성 검사
+  const validateId = (id: string) => {
+    if (id.length < 4 || id.length > 10) {
+      setIdValidationMessage('아이디는 4~10자 사이여야 합니다.');
+      setIsIdValid(false);
+      return false;
+    }
+    setIdValidationMessage('');
+    setIsIdValid(true);
+    return true;
+  };
+
+  // 비밀번호 유효성 검사
+  const validatePassword = (pw: string) => {
+    if (pw.length < 6) {
+      setPasswordValidationMessage('비밀번호는 6자 이상이어야 합니다.');
+      setIsPasswordValid(false);
+      return false;
+    }
+    setPasswordValidationMessage('');
+    setIsPasswordValid(true);
+    return true;
+  };
+
   // 아이디 중복 확인 함수
   const handleCheckId = async () => {
     if (userId.trim() === '') {
       setIdCheckMessage('아이디를 입력해주세요.');
       setIsIdAvailable(false);
+      return;
+    }
+    if (!validateId(userId)) {
       return;
     }
     try {
@@ -76,6 +109,14 @@ const Register = () => {
       alert('개인정보 수집 및 이용에 동의해야 합니다.');
       return;
     }
+    if (!validateId(userId)) {
+      alert('아이디 형식이 올바르지 않습니다.');
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert('비밀번호 형식이 올바르지 않습니다.');
+      return;
+    }
     if (isIdAvailable === null || !isIdAvailable) {
       alert('아이디 중복 확인을 해주세요.');
       return;
@@ -86,17 +127,17 @@ const Register = () => {
     }
     
     try {
-      const response = await axiosInstance.post('/api/v1/auth/signup', { // 백엔드 엔드포인트에 맞춤
+      const response = await axiosInstance.post('/api/v1/auth/signup', {
         userId: userId,
         password: password,
         nickname: nickname,
       });
       console.log('회원가입 성공:', response.data);
-      alert(response.data); // 성공 메시지 표시
-      navigate('/'); // 성공 시 로그인 페이지로 이동
+      alert(response.data);
+      navigate('/');
     } catch (error: any) {
       console.error('회원가입 실패:', error.response ? error.response.data : error.message);
-      alert(error.response ? error.response.data.message || error.response.data : '회원가입 중 오류가 발생했습니다.'); // 백엔드에서 보낸 오류 메시지 또는 기본 메시지
+      alert(error.response ? error.response.data.message || error.response.data : '회원가입 중 오류가 발생했습니다.');
     }
   };
 
@@ -126,12 +167,13 @@ const Register = () => {
                 type="text"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm pr-20"
-                placeholder="아이디"
+                placeholder="아이디 (4~10자)"
                 value={userId}
                 onChange={(e) => {
                   setUserId(e.target.value);
                   setIsIdAvailable(null);
                   setIdCheckMessage('');
+                  validateId(e.target.value);
                 }}
               />
               <button
@@ -142,6 +184,11 @@ const Register = () => {
                 중복 확인
               </button>
             </div>
+            {idValidationMessage && (
+              <p className="mt-2 text-sm text-red-600">
+                {idValidationMessage}
+              </p>
+            )}
             {idCheckMessage && (
               <p className={`mt-2 text-sm ${isIdAvailable ? 'text-green-600' : 'text-red-600'}`}>
                 {idCheckMessage}
@@ -155,11 +202,19 @@ const Register = () => {
                 type="password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="비밀번호"
+                placeholder="비밀번호 (6자 이상)"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validatePassword(e.target.value);
+                }}
               />
             </div>
+            {passwordValidationMessage && (
+              <p className="mt-2 text-sm text-red-600">
+                {passwordValidationMessage}
+              </p>
+            )}
             <div className="relative flex items-center">
               <label htmlFor="nickname" className="sr-only">닉네임</label>
               <input

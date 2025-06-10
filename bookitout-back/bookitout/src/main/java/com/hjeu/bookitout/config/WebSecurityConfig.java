@@ -40,7 +40,7 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/api/v1/auth/**", "/api/v1/search/**", "/api/v1/book/**").permitAll() // 특정 URL 허용
-                        .requestMatchers(HttpMethod.GET, "/api/v1/search/**", "/api/v1/user/*", "/api/v1/library/libraryList").permitAll() // 특정 URL 허용
+                        .requestMatchers(HttpMethod.GET, "/api/v1/search/**", "/api/v1/user/*", "/api/v1/library/libraryList", "/api/v1/admin/**").permitAll() // 특정 URL 허용
                         .anyRequest().authenticated() // 나머지 요청 인증 필요
                 )
                 .exceptionHandling(exception ->
