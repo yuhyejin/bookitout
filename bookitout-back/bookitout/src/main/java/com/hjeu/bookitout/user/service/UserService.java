@@ -11,4 +11,6 @@ public interface UserService {
     TokenResponseVO reissue(String refreshToken);
 
     void logout(String userId);
+
+    void checkId(String userId);
 }

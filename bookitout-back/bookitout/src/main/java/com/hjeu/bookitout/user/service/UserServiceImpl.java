@@ -85,4 +85,12 @@ public class UserServiceImpl implements UserService {
     public void logout(String userId) {
         refreshTokenRedisRepository.deleteById(userId);
     }
+
+    // 아이디 중복확인
+    @Override
+    public void checkId(String userId) {
+        userRepository.findByUserId(userId).ifPresent(user -> {
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        });
+    }
 }

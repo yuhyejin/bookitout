@@ -75,4 +75,17 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그아웃 실패");
         }
     }
+
+    // 아이디 중복확인
+    @GetMapping("/check-id")
+    public ResponseEntity<?> checkId(@RequestParam String userId) {
+        try {
+            userService.checkId(userId);
+            return ResponseEntity.ok("사용할 수 있는 아이디입니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("아이디 중복 확인 중 오류가 발생했습니다.");
+        }
+    }
 }
