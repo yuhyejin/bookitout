@@ -7,14 +7,6 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-<<<<<<< HEAD
-  servlet:
-    multipart:
-      max-file-size: ${MAX_FILE_SIZE}
-      max-request-size: ${MAX_REQUEST_SIZE}
-
-secret-key: ${SECRET_KEY}
-=======
   
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -51,4 +43,3 @@ library:
 crawler:
   api:
     url: ${CRAWLER_API_URL}
->>>>>>> dev

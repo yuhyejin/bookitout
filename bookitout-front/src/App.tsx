@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import './App.css';
-
-function App() {
-  return (
-    <></>
-  );
-}
-
-export default App;
-=======
 // src/App.tsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // 라우팅 관련 컴포넌트 임포트
@@ -34,4 +22,3 @@ function App() {
 }
 
 export default App;
->>>>>>> dev
