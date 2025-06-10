@@ -28,15 +28,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-<<<<<<< HEAD
-    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-=======
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // 최신 JWT 구성
@@ -61,7 +52,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
->>>>>>> dev
 }
 
 tasks.named('test') {
