@@ -5,22 +5,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
-=======
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
->>>>>>> dev
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
-<<<<<<< HEAD
-=======
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
->>>>>>> dev
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,11 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 
-<<<<<<< HEAD
-@Configurable
-=======
 @Configuration
->>>>>>> dev
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
@@ -76,13 +64,10 @@ public class WebSecurityConfig {
         return source;
     }
 
-<<<<<<< HEAD
-=======
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
->>>>>>> dev
 
 }
 

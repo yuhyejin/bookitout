@@ -3,14 +3,6 @@ package com.hjeu.bookitout.provider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-=======
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,43 +14,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Map;
->>>>>>> dev
 
 @Component
 public class JwtProvider {
 
     @Value("${secret-key}")
-<<<<<<< HEAD
-    private String secretKey;
-
-    public String create(String email) {
-
-        Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
-
-        String jwt = Jwts.builder()
-                .signWith(SignatureAlgorithm.ES256, secretKey)
-                .setSubject(email).setIssuedAt(new Date()).setExpiration(expiredDate)
-                .compact();
-
-        return jwt;
-
-    }
-
-    public String validate(String jwt) {
-
-        Claims claims = null;
-
-        try {
-            claims = Jwts.parser().setSigningKey(secretKey)
-                    .parseClaimsJws(jwt).getBody();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return claims.getSubject();
-    }
-
-=======
     private String secretKeyString;
 
     private Key secretKey;
@@ -122,5 +82,4 @@ public class JwtProvider {
 
         return claims.get("userId", String.class);
     }
->>>>>>> dev
 }
