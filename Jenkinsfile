@@ -31,14 +31,10 @@ pipeline {
 
         stage('Build Frontend (React)') {
             steps {
-                script {
-                    echo 'Building frontend application...'
-                    dir('bookitout-front') {
-                        // npm 의존성 설치
-                        sh 'npm install'
-                        // React 애플리케이션 빌드
-                        sh 'npm run build'
-                    }
+                dir('bookitout-front') {
+                    sh 'npm run clean'
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
             }
         }
