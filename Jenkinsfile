@@ -34,10 +34,10 @@ pipeline {
                 script {
                     echo 'Building frontend application...'
                     dir('bookitout-front') {
-                        // npm 의존성 설치
-                        sh 'npm install'
                         // 이전 빌드 파일 및 node_modules 정리
                         sh 'npx rimraf node_modules build'
+                        // npm 의존성 설치
+                        sh 'npm install'
                         // React 애플리케이션 빌드
                         sh 'npx react-scripts build'
                     }
