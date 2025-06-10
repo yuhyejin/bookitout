@@ -7,9 +7,48 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+<<<<<<< HEAD
   servlet:
     multipart:
       max-file-size: ${MAX_FILE_SIZE}
       max-request-size: ${MAX_REQUEST_SIZE}
 
 secret-key: ${SECRET_KEY}
+=======
+  
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+admin:
+  email: ${ADMIN_EMAIL}
+
+secret-key: ${SECRET_KEY}
+
+library:
+  api:
+    key: ${LIBRARY_API_KEY}
+
+crawler:
+  api:
+    url: ${CRAWLER_API_URL}
+>>>>>>> dev
