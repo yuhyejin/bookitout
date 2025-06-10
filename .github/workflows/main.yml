@@ -65,18 +65,18 @@ jobs:
       with:
         context: ./bookitout-back/bookitout
         push: true
-        tags: yuhyejin/bookitout-backend:latest
+        tags: hjeu/bookitout-backend:latest
 
     - name: Build and Push Frontend Docker Image
       uses: docker/build-push-action@v5
       with:
         context: ./bookitout-front
         push: true
-        tags: yuhyejin/bookitout-frontend:latest
+        tags: hjeu/bookitout-frontend:latest
 
     - name: Build and Push Flask Docker Image
       uses: docker/build-push-action@v5
       with:
         context: ./bookitout-flask/crawler
         push: true
-        tags: yuhyejin/bookitout-flask-crawler:latest
+        tags: hjeu/bookitout-flask-crawler:latest
