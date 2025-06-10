@@ -68,15 +68,15 @@ pipeline {
 
                     // 백엔드 Docker 이미지 빌드
                     dir('bookitout-back/bookitout') {
-                        sh "docker build -t yuhyejin/bookitout-backend:latest ."
+                        sh 'DOCKER_HOST=unix:///var/run/docker.sock docker build -t yuhyejin/bookitout-backend:latest .'
                     }
                     // 프론트엔드 Docker 이미지 빌드
                     dir('bookitout-front') {
-                        sh "docker build -t yuhyejin/bookitout-frontend:latest ."
+                        sh 'DOCKER_HOST=unix:///var/run/docker.sock docker build -t yuhyejin/bookitout-frontend:latest .'
                     }
                     // Flask Docker 이미지 빌드
                     dir('bookitout-flask/crawler') {
-                        sh "docker build -t yuhyejin/bookitout-flask-crawler:latest ."
+                        sh 'DOCKER_HOST=unix:///var/run/docker.sock docker build -t yuhyejin/bookitout-flask-crawler:latest .'
                     }
                     echo 'All Docker images built successfully.'
                 }
