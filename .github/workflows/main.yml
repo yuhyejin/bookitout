@@ -24,8 +24,8 @@ jobs:
 
     - name: Build Backend (Spring Boot)
       run: |
-        chmod +x ./bookitout-back/bookitout/gradlew # gradlew 실행 권한 부여
-        ./bookitout-back/bookitout/gradlew clean build -x test # 테스트 제외 빌드 (필요시 테스트 포함)
+        chmod +x ./gradlew # gradlew 실행 권한 부여
+        ./gradlew clean build -x test # 테스트 제외 빌드 (필요시 테스트 포함)
       working-directory: bookitout-back/bookitout # 백엔드 디렉토리에서 실행
 
     - name: Set up Node.js for Frontend
