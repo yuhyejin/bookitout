@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     echo 'Cloning GitHub repository...'
-                    git branch: 'main', credentialsId: env.GIT_CREDENTIALS_ID, url: 'https://github.com/yuhyejin/bookitout.git'
+                    git branch: 'dev', credentialsId: env.GIT_CREDENTIALS_ID, url: 'https://github.com/yuhyejin/bookitout.git'
                 }
             }
         }
