@@ -50,9 +50,9 @@ pipeline {
                 script {
                     echo 'Installing Flask app dependencies...'
                     dir('bookitout-flask/crawler') {
-                        // Jenkins 컨테이너에 Python 및 pip 설치 (필요한 경우) -> 이 단계는 수동으로 컨테이너 내부에서 실행해야 합니다.
-                        // sh 'apt-get update'
-                        // sh 'apt-get install -y python3-pip'
+                        // Python 가상 환경 생성 및 활성화
+                        sh 'python3 -m venv venv'
+                        sh 'source venv/bin/activate'
                         // Python 의존성 설치
                         sh 'pip install -r requirements.txt'
                     }
