@@ -33,6 +33,7 @@ jobs:
       with:
         node-version: '18' # Node.js 18 LTS 버전 사용
         cache: 'npm' # npm 캐싱 활성화
+        cache-dependency-path: bookitout-front/package-lock.json # package-lock.json 파일 경로 지정
       
     - name: Build Frontend (React)
       run: |
