@@ -105,7 +105,13 @@ const Register = () => {
             />
             <label htmlFor="agree-personal-data" className="ml-2 block text-sm text-gray-900">
               <span className="font-bold">개인정보 수집 및 이용</span>에 동의합니다.
-              <a href="#" onClick={(e) => { e.preventDefault(); setShowPrivacyModal(true); }} className="ml-1 text-purple-600 hover:text-purple-500 underline">자세히 보기</a>
+              <button
+                type="button"
+                onClick={() => { setShowPrivacyModal(true); }}
+                className="ml-1 text-purple-600 hover:text-purple-500 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              >
+                자세히 보기
+              </button>
             </label>
           </div>
 
