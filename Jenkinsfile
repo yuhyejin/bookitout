@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     echo 'Cloning GitHub repository...'
-                    git branch: 'main', credentialsId: env.GIT_CREDENTIALS_ID, url: 'https://github.com/yuhyejin/bookitout.git'
+                    git branch: 'dev', credentialsId: env.GIT_CREDENTIALS_ID, url: 'https://github.com/yuhyejin/bookitout.git'
                 }
             }
         }
@@ -31,10 +31,16 @@ pipeline {
 
         stage('Build Frontend (React)') {
             steps {
-                dir('bookitout-front') {
-                    sh 'npm run clean'
-                    sh 'npm install'
-                    sh 'npm run build'
+                script {
+                    echo 'Building frontend application...'
+                    dir('bookitout-front') {
+                        // npm 의존성 설치
+                        sh 'npm install'
+                        // 이전 빌드 파일 및 node_modules 정리
+                        sh 'npx rimraf node_modules build'
+                        // React 애플리케이션 빌드
+                        sh 'npm run build'
+                    }
                 }
             }
         }
