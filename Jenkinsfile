@@ -50,11 +50,12 @@ pipeline {
                 script {
                     echo 'Installing Flask app dependencies...'
                     dir('bookitout-flask/crawler') {
-                        // Python 가상 환경 생성 및 활성화
-                        sh 'python3 -m venv venv'
-                        sh 'source venv/bin/activate'
-                        // Python 의존성 설치
-                        sh 'pip install -r requirements.txt'
+                        // Python 가상 환경 생성 및 활성화, 그리고 의존성 설치
+                        sh '''
+                            python3 -m venv venv
+                            . venv/bin/activate
+                            pip install -r requirements.txt
+                        '''
                     }
                 }
             }
