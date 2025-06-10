@@ -7,19 +7,19 @@ const BottomNav = () => {
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
       <div className="flex justify-around items-center h-16">
         <Link to="/" className="flex flex-col items-center">
-          <FaHome className="text-xl" />
+          <FaHome size={24} />
           <span className="text-xs mt-1">홈</span>
         </Link>
         <Link to="/search" className="flex flex-col items-center">
-          <FaSearch className="text-xl" />
+          <FaSearch size={24} />
           <span className="text-xs mt-1">검색</span>
         </Link>
         <Link to="/library" className="flex flex-col items-center">
-          <FaBook className="text-xl" />
+          <FaBook size={24} />
           <span className="text-xs mt-1">도서관</span>
         </Link>
         <Link to="/profile" className="flex flex-col items-center">
-          <FaUser className="text-xl" />
+          <FaUser size={24} />
           <span className="text-xs mt-1">프로필</span>
         </Link>
       </div>
