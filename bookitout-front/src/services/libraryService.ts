@@ -52,3 +52,14 @@ export const deleteFavoriteLibrary = async (libId: number) => {
     throw error;
   }
 };
+
+// 도서관 동기화 API
+export const syncLibraryData = async () => {
+  try {
+    const response = await axiosInstance.post('/api/v1/admin/library/sync');
+    return response.data;
+  } catch (error) {
+    console.error('도서관 동기화 실패:', error);
+    throw error;
+  }
+};
