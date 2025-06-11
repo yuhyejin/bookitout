@@ -8,4 +8,5 @@ import lombok.Getter;
 public class TokenResponseVO {
     private String accessToken;
     private String refreshToken;
+    private String role;
 }

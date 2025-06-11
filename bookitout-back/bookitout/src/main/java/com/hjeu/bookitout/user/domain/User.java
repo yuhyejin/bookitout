@@ -26,6 +26,10 @@ public class User {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Column(name = "status", nullable = false)
     private boolean status = true;
 
@@ -39,6 +43,9 @@ public class User {
     private void prePersist() {
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();
+        }
+        if (this.role == null) {
+            this.role = Role.USER;
         }
     }
 }

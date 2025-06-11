@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance'; // axiosInstance 임포트
+import { saveUserRole } from '../utils/authUtils'; // authUtils 임포트
 
 const Login = () => {
   const [userId, setUserId] = useState(''); // email 대신 userId로 변경
@@ -28,7 +29,12 @@ const Login = () => {
       });
 
       console.log('로그인 성공:', response.data);
-      const { accessToken, refreshToken } = response.data; // 백엔드 TokenResponseVO에서 토큰 추출
+      const { accessToken, refreshToken, role } = response.data; // 백엔드 TokenResponseVO에서 토큰과 역할 추출
+
+      // 사용자 역할 정보 저장
+      if (role) {
+        saveUserRole(role);
+      }
 
       // 로그인 정보 저장 체크박스가 체크되어 있으면 userId 저장
       if (rememberMe) {

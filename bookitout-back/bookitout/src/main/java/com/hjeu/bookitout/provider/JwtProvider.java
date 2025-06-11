@@ -37,7 +37,7 @@ public class JwtProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(expiry)
                 .claim("userId", userId)
-                .claim("role", "USER")
+                .claim("role", role)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -51,24 +51,21 @@ public class JwtProvider {
                 .setIssuedAt(new Date())
                 .setExpiration(expiry)
                 .claim("userId", userId)
-                .claim("role", "USER")
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // 토큰 검증 및 userId 추출
-    public String validate(String token) {
+    // 토큰 검증 (유효성만 검사)
+    public boolean validate(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            return claims.getSubject();
+                    .parseClaimsJws(token);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
@@ -81,5 +78,16 @@ public class JwtProvider {
                 .getBody();
 
         return claims.get("userId", String.class);
+    }
+
+    // 클레임에서 role 직접 꺼내기
+    public String extractRole(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("role", String.class);
     }
 }

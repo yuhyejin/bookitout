@@ -5,6 +5,7 @@ import com.hjeu.bookitout.user.service.UserService;
 import com.hjeu.bookitout.user.vo.request.LoginRequestVO;
 import com.hjeu.bookitout.user.vo.request.SignupRequestVO;
 import com.hjeu.bookitout.user.vo.response.TokenResponseVO;
+import com.hjeu.bookitout.user.vo.response.UserInfoResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -99,6 +100,19 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("닉네임 중복 확인 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 현재 로그인한 사용자 정보 조회
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal String userId) {
+        try {
+            UserInfoResponseVO userInfo = userService.getUserInfo(userId);
+            return ResponseEntity.ok(userInfo);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("사용자 정보 조회 중 오류가 발생했습니다.");
         }
     }
 }

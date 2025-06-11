@@ -7,6 +7,7 @@ import com.hjeu.bookitout.user.dto.UserDTO;
 import com.hjeu.bookitout.user.repository.RefreshTokenRedisRepository;
 import com.hjeu.bookitout.user.repository.UserRepository;
 import com.hjeu.bookitout.user.vo.response.TokenResponseVO;
+import com.hjeu.bookitout.user.vo.response.UserInfoResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        String accessToken = jwtProvider.createAccessToken(user.getUserId(), "USER");
+        String accessToken = jwtProvider.createAccessToken(user.getUserId(), user.getRole().getKey());
         String refreshToken = jwtProvider.createRefreshToken(user.getUserId());
 
         // Redis에 저장
@@ -61,13 +62,18 @@ public class UserServiceImpl implements UserService {
                 .token(refreshToken)
                 .build());
 
-        return new TokenResponseVO(accessToken, refreshToken);
+        return new TokenResponseVO(accessToken, refreshToken, user.getRole().getKey());
     }
 
     // RefreshToken을 이용한 재발급
     public TokenResponseVO reissue(String refreshToken) {
-        String userId = jwtProvider.validate(refreshToken);
-        if (userId == null) throw new IllegalArgumentException("유효하지 않은 토큰");
+        // 토큰 유효성 검증
+        if (!jwtProvider.validate(refreshToken)) {
+            throw new IllegalArgumentException("유효하지 않은 토큰");
+        }
+
+        // 유효한 토큰에서 userId 추출
+        String userId = jwtProvider.extractUserId(refreshToken);
 
         RefreshToken saved = refreshTokenRedisRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("리프레시 토큰이 존재하지 않음"));
@@ -76,8 +82,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("토큰 불일치");
         }
 
-        String newAccessToken = jwtProvider.createAccessToken(userId, "USER");
-        return new TokenResponseVO(newAccessToken, refreshToken); // refresh는 그대로 유지
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        String newAccessToken = jwtProvider.createAccessToken(userId, user.getRole().getKey());
+        return new TokenResponseVO(newAccessToken, refreshToken, user.getRole().getKey()); // refresh는 그대로 유지
     }
 
     // 로그아웃
@@ -100,5 +109,18 @@ public class UserServiceImpl implements UserService {
         userRepository.findByNickname(nickname).ifPresent(user -> {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         });
+    }
+
+    // 사용자 정보 조회
+    @Override
+    public UserInfoResponseVO getUserInfo(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        
+        return UserInfoResponseVO.builder()
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .role(user.getRole().getKey())
+                .build();
     }
 }

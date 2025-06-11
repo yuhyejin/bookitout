@@ -22,9 +22,9 @@ const BottomNav = () => {
           <UserIcon className="w-6 h-6" />
           <span className="text-xs mt-1">프로필</span>
         </Link>
-      </div>
-    </nav>
-  );
+    </div>
+  </nav>
+);
 };
 
 export default BottomNav;
