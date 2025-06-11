@@ -28,20 +28,20 @@ public class LibrarySyncServiceImpl implements LibrarySyncService {
         this.webClient = webClient;
     }
 
-public List<Library> fetchLibrariesFromOpenAPI() {
-    String url = "http://data4library.kr/api/libSrch?authKey=" + apiKey + "&pageNo=1&pageSize=1600&format=json";
+    public List<Library> fetchLibrariesFromOpenAPI() {
+        String url = "http://data4library.kr/api/libSrch?authKey=" + apiKey + "&pageNo=1&pageSize=1600&format=json";
 
-    LibraryOpenApiResponse response = webClient.get()
-            .uri(url)
-            .retrieve()
-            .bodyToMono(LibraryOpenApiResponse.class)
-            .block();
+        LibraryOpenApiResponse response = webClient.get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(LibraryOpenApiResponse.class)
+                .block();
 
-    return response.getLibs()
-            .stream()
-            .map(Library::fromOpenApi)
-            .collect(Collectors.toList());
-}
+        return response.getLibs()
+                .stream()
+                .map(Library::fromOpenApi)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     @Override
@@ -58,5 +58,19 @@ public List<Library> fetchLibrariesFromOpenAPI() {
                             () -> libraryRepository.save(lib) // 새로 추가
                     );
         }
+    }
+
+    @Transactional
+    @Override
+    public void updateLibraryHasCrawlerStatus(String libName, boolean hasCrawler) {
+        Library library = libraryRepository.findByLibName(libName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 도서관을 찾을 수 없습니다: " + libName));
+        library.setHasCrawler(hasCrawler);
+        libraryRepository.save(library);
+    }
+
+    @Override
+    public List<Library> getLibrariesByHasCrawlerStatus(boolean hasCrawler) {
+        return libraryRepository.findByHasCrawler(hasCrawler);
     }
 }

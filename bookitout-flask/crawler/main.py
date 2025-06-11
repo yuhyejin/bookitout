@@ -24,5 +24,14 @@ def crawl():
         traceback.print_exc() 
         return jsonify({"error": str(e)}), 500
 
+@app.route('/has_crawler', methods=['GET'])
+def has_crawler():
+    library_name = request.args.get('library')
+    if not library_name:
+        return jsonify({"error": "Missing 'library' parameter"}), 400
+
+    crawler_exists = get_crawler(library_name) is not None
+    return jsonify({"has_crawler": crawler_exists})
+
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=5001)

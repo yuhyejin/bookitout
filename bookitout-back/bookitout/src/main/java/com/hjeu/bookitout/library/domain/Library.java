@@ -31,12 +31,17 @@ public class Library {
     @Column(name = "homepage_url")
     private String homepageUrl;
 
+    @Column(name = "has_crawler", nullable = false)
+    @Builder.Default
+    private boolean hasCrawler = false;
+
     public static Library fromOpenApi(LibraryOpenApiResponse.LibraryRaw raw) {
         return Library.builder()
                 .libCode(raw.getLibCode())
                 .libName(raw.getLibName())
                 .homepageUrl(raw.getHomepage())
                 .address(raw.getAddress())
+                .hasCrawler(false)
                 .build();
     }
 
@@ -44,5 +49,9 @@ public class Library {
         this.libName = other.getLibName();
         this.homepageUrl = other.getHomepageUrl();
         this.address = other.getAddress();
+    }
+
+    public void setHasCrawler(boolean hasCrawler) {
+        this.hasCrawler = hasCrawler;
     }
 }

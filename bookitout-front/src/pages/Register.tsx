@@ -21,8 +21,6 @@ const Register = () => {
   const [nicknameCheckMessage, setNicknameCheckMessage] = useState('');
 
   // 유효성 검사 상태
-  const [isIdValid, setIsIdValid] = useState<boolean | null>(null);
-  const [isPasswordValid, setIsPasswordValid] = useState<boolean | null>(null);
   const [idValidationMessage, setIdValidationMessage] = useState('');
   const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
 
@@ -30,11 +28,9 @@ const Register = () => {
   const validateId = (id: string) => {
     if (id.length < 4 || id.length > 10) {
       setIdValidationMessage('아이디는 4~10자 사이여야 합니다.');
-      setIsIdValid(false);
       return false;
     }
     setIdValidationMessage('');
-    setIsIdValid(true);
     return true;
   };
 
@@ -42,11 +38,9 @@ const Register = () => {
   const validatePassword = (pw: string) => {
     if (pw.length < 6) {
       setPasswordValidationMessage('비밀번호는 6자 이상이어야 합니다.');
-      setIsPasswordValid(false);
       return false;
     }
     setPasswordValidationMessage('');
-    setIsPasswordValid(true);
     return true;
   };
 

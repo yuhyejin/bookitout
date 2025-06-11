@@ -12,4 +12,8 @@ public interface LibraryRepository extends JpaRepository<Library, String> {
     List<Library> findByLibNameContainingIgnoreCase(String libName);
 
     Optional<Library> findByLibCode(String libCode);
+
+    Optional<Library> findByLibName(String libName);
+
+    List<Library> findByHasCrawler(boolean hasCrawler);
 }

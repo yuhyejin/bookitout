@@ -18,4 +18,6 @@ public interface LibraryFavoriteRepository extends JpaRepository<LibraryFavorite
     List<String> findLibNamesByUserId(String userId);
 
     boolean existsByLibName(String libName);
+
+    boolean existsByUserIdAndLibName(String userId, String libName);
 }

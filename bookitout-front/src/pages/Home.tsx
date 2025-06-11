@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import LibraryList from '../components/LibraryList';
 import BookCard from '../components/BookCard';
-import BottomNav from '../components/BottomNav';
 import Pagination from '../components/Pagination';
 import InstallBanner from '../components/InstallBanner';
 import AddLibraryModal from '../components/AddLibraryModal';
@@ -154,7 +153,6 @@ const Home = () => {
           {searchResults.length > 0 && <Pagination />}
         </section>
       </main>
-      <BottomNav />
       <InstallBanner />
     </div>
   );

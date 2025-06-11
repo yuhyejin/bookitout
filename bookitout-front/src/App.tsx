@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; // 라우팅 �
 import Home from './pages/Home';
 import Login from './pages/Login'; // Login 컴포넌트 임포트
 import Register from './pages/Register';
+import AdminPage from './pages/AdminPage'; // AdminPage 컴포넌트 임포트
 import './index.css'; // Tailwind CSS를 임포트
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Login />} /> {/* 기본 경로(/)는 로그인 페이지 */}
           <Route path="/home" element={<Home />} /> {/* /home 경로는 홈 페이지 */}
           <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminPage />} /> {/* AdminPage 라우트 추가 */}
           {/* 추가 페이지가 있다면 여기에 Route를 추가합니다. */}
         </Routes>
       </div>

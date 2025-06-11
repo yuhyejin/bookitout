@@ -72,6 +72,14 @@ const Header = () => {
             {isSyncing ? '동기화 중...' : '도서관 동기화'}
           </button>
         )}
+        {isAdminUser && (
+          <button
+            onClick={() => navigate('/admin')}
+            className="px-4 py-2 rounded-full bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition"
+          >
+            관리자 페이지
+          </button>
+        )}
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-300 to-pink-300 flex items-center justify-center text-white font-bold">
           HJ
         </div>
