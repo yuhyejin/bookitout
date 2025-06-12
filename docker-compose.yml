@@ -29,7 +29,7 @@ services:
     ports:
       - "3000:80"
     environment:
-      - REACT_APP_API_URL=http://13.124.211.28/:8000
+      - REACT_APP_API_URL=http://13.124.211.28:8000
     env_file:
       - ./.env
 
