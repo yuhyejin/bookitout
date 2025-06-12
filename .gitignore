@@ -294,4 +294,6 @@ gradle-app.setting
 
 .env
 
+certbot-data/
+
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,macos,intellij,intellij+all,react,visualstudiocode
