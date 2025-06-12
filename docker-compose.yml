@@ -75,6 +75,8 @@ services:
 
   certbot:
     image: certbot/certbot
+    ports:
+      - "80:80"
     volumes:
       - ./certbot-data/conf:/etc/letsencrypt
       - ./certbot-data/www:/var/www/certbot
