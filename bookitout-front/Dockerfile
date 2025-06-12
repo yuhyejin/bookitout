@@ -6,7 +6,7 @@ COPY package-lock.json ./
 
 # 기존 node_modules 및 package-lock.json을 클린업합니다.
 # 이렇게 하면 캐시 문제를 방지하고 의존성을 새로 설치할 수 있습니다.
-RUN npm cache clean --force && rm -rf node_modules && npm install --verbose
+RUN npm cache clean --force && npm install
 COPY . ./
 RUN npm run build
 

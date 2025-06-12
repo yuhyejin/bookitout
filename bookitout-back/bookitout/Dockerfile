@@ -14,9 +14,10 @@ COPY . .
 ## deamon 스레드를 쓰지 않음으로써 쓸데없이 리소스가 소모되는 것을 방지하는 코드로 작성
 #RUN gradle clean build --no-daemon
 RUN gradle clean build --no-daemon -x test
+RUN rm -rf /root/.gradle/caches
 
 ## 2-2. 앞선 build라는 이름의 스테이지 결과로 실행 스테이지 시작
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar ./
 RUN mv $(ls *.jar | grep -v plain) app.jar
