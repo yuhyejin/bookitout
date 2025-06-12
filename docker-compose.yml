@@ -75,8 +75,8 @@ services:
 
   certbot:
     image: certbot/certbot
-    ports:
-      - "80:80"
+    # ports:
+    #   - "80:80" # Certbot standalone 모드를 위해 80번 포트 매핑 추가 - 이제 사용하지 않음
     volumes:
       - ./certbot-data/conf:/etc/letsencrypt
       - ./certbot-data/www:/var/www/certbot
