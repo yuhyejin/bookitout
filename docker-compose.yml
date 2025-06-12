@@ -27,11 +27,17 @@ services:
     build:
       context: ./bookitout-front
     ports:
-      - "3000:80"
+      - "80:80"
+      - "443:443"
     environment:
-      - REACT_APP_API_URL=http://13.124.211.28:8000
+      - REACT_APP_API_URL=http://bookitout.site:8000
     env_file:
       - ./.env
+    volumes:
+      - ./data/certbot/conf:/etc/nginx/ssl
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - certbot
 
   mysql:
     image: mysql:8.0
@@ -66,6 +72,14 @@ services:
       retries: 5
       start_period: 10s
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --staging -d bookitout.site --email hj_eu@naver.com --rsa-key-size 4096 --agree-tos --noninteractive
+
 volumes:
   mysql-data:
   redis-data:
+  certbot-data:
