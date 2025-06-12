@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Spring Boot 백엔드의 기본 API URL. 실제 배포 시에는 변경해야 합니다.
-const API_BASE_URL = 'http://13.124.211.28/:8000';
+const API_BASE_URL = 'http://13.124.211.28:8000';
 // const API_BASE_URL = 'http://backend:8000';
 
 const axiosInstance = axios.create({
