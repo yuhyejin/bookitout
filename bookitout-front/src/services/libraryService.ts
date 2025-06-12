@@ -26,12 +26,9 @@ export const getFavoriteLibraries = async () => {
 };
 
 // 도서관 즐겨찾기 등록 API
-export const addFavoriteLibrary = async (libName: string, libUrl: string) => {
+export const addFavoriteLibrary = async (libName: string, libUrl: string): Promise<boolean> => {
   try {
-    const response = await axiosInstance.post<{
-      message: string;
-      existsInLibrary: boolean;
-    }>('/api/v1/library-favorite/favorite', {
+    const response = await axiosInstance.post<boolean>('/api/v1/library-favorite/favorite', {
       libName,
       libUrl,
     });

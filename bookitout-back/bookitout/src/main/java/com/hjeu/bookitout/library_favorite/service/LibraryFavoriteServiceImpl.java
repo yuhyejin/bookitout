@@ -97,7 +97,7 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
                 .build();
         libraryFavoriteRepository.save(favorite);
 
-        return true;
+        return hasCrawler;
     }
 
     @Override

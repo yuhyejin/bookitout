@@ -70,8 +70,8 @@ const AddLibraryModal = ({ isOpen, onClose, onSuccess }: AddLibraryModalProps) =
   const handleAddFavorite = async (library: Library) => {
     setSubmittingFavorite(library.libCode);
     try {
-      const response = await addFavoriteLibrary(library.libName, library.homepageUrl);
-      if (response.existsInLibrary) {
+      const hasCrawler = await addFavoriteLibrary(library.libName, library.homepageUrl);
+      if (hasCrawler) {
         setNotification({
           isOpen: true,
           message: `${library.libName} 도서관 즐겨찾기 등록 완료!`,

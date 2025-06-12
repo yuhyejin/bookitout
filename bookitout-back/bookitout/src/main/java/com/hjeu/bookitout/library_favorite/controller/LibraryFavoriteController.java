@@ -27,7 +27,7 @@ public class LibraryFavoriteController {
 
     // 도서관 즐겨찾기 등록
     @PostMapping("/favorite")
-    public ResponseEntity<?> addLibraryFavorite(@RequestBody LibraryFavoriteRequestVO request,
+    public ResponseEntity<Boolean> addLibraryFavorite(@RequestBody LibraryFavoriteRequestVO request,
                                                 @AuthenticationPrincipal String userId) {
         LibraryFavoriteDTO dto = LibraryFavoriteDTO.builder()
                         .userId(userId)
@@ -35,12 +35,9 @@ public class LibraryFavoriteController {
                         .libUrl(request.getLibUrl())
                         .build();
 
-        boolean existsInLibrary = libraryFavoriteService.addFavoriteLibrary(dto);
+        boolean hasCrawler = libraryFavoriteService.addFavoriteLibrary(dto);
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("message", "도서관 즐겨찾기 등록 완료");
-        result.put("existsInLibrary", existsInLibrary);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(hasCrawler);
     }
 
     // 도서관 즐겨찾기 조회
