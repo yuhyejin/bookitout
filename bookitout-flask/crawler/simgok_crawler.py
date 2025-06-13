@@ -19,7 +19,8 @@ class SimgokLibraryCrawler:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
 
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        options.binary_location = "/usr/bin/chromium"
+        driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
             # 1. 새로운 검색 페이지 접속
