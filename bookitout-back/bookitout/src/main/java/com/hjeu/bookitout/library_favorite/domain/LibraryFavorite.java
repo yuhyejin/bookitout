@@ -26,7 +26,7 @@ public class LibraryFavorite {
     private String libUrl;
 
     @Column(name = "status", nullable = false)
-    private boolean status = true;
+    private Boolean status = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;

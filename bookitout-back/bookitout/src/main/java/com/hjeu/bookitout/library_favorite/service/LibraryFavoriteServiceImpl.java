@@ -44,7 +44,7 @@ public class LibraryFavoriteServiceImpl implements LibraryFavoriteService {
     @Override
     @Transactional
     public boolean addFavoriteLibrary(LibraryFavoriteDTO dto) {
-        if (libraryFavoriteRepository.existsByUserIdAndLibName(dto.getUserId(), dto.getLibName())) {
+        if (libraryFavoriteRepository.existsByUserIdAndLibNameAndStatusIsTrue(dto.getUserId(), dto.getLibName())) {
             log.info("사용자 {}가 도서관 {}을 이미 즐겨찾기했습니다.", dto.getUserId(), dto.getLibName());
             return true;
         }

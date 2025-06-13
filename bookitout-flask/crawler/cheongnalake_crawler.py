@@ -21,9 +21,8 @@ class CheongnaLakeLibraryCrawler:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
 
-        # Service 객체를 사용하여 WebDriver 초기화
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
+        options.binary_location = "/usr/bin/chromium"
+        driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
             print(f"'{book_title}' 책을 위해 청라호수도서관 크롤링 시작...")

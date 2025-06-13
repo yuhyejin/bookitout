@@ -19,8 +19,8 @@ class SubongLibraryCrawler:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
 
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
+        options.binary_location = "/usr/bin/chromium"
+        driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
             # 1. 메인 페이지 접속

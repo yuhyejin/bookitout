@@ -19,5 +19,5 @@ public interface LibraryFavoriteRepository extends JpaRepository<LibraryFavorite
 
     boolean existsByLibName(String libName);
 
-    boolean existsByUserIdAndLibName(String userId, String libName);
+    boolean existsByUserIdAndLibNameAndStatusIsTrue(String userId, String libName);
 }
