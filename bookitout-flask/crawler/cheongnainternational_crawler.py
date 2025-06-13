@@ -1,5 +1,7 @@
 import time
 import re
+import os
+import shutil
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,14 +16,18 @@ class CheongnaInternationalLibraryCrawler:
         self.URL = "https://www.michuhollib.go.kr/cnl/sch/bsch/list.do?mnidx=414"
 
     def get_book_status(self, book_title: str):
+
+        user_data_dir = f"/tmp/chrome_user_data_{time.time()}"
+
         # WebDriver 설정 (헤드리스 모드)
         options = Options()
         # options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
-
+        options.add_argument(f"--user-data-dir={user_data_dir}")
         options.binary_location = "/usr/bin/chromium"
+
         driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
@@ -188,3 +194,10 @@ class CheongnaInternationalLibraryCrawler:
             return []
         finally:
             driver.quit()
+            # 임시 유저 데이터 디렉토리 정리
+            if os.path.exists(user_data_dir):
+                try:
+                    shutil.rmtree(user_data_dir)
+                    print(f"사용자 데이터 디렉토리 {user_data_dir} 삭제 완료.")
+                except Exception as cleanup_error:
+                    print(f"임시 디렉토리 삭제 실패: {cleanup_error}")
