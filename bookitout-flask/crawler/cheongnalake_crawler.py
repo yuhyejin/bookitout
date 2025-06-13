@@ -16,7 +16,7 @@ class CheongnaLakeLibraryCrawler:
     def get_book_status(self, book_title: str):
         # WebDriver 설정 (헤드리스 모드)
         options = Options()
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
