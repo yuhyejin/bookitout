@@ -37,6 +37,7 @@ services:
       - ./certbot-data/conf:/etc/letsencrypt
       - ./certbot-data/www:/var/www/certbot
     depends_on:
+      - backend
       - certbot
 
   mysql:
