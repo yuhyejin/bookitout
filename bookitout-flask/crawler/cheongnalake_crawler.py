@@ -3,6 +3,7 @@ import re
 import tempfile
 import shutil
 import os
+import uuid
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -16,17 +17,19 @@ class CheongnaLakeLibraryCrawler:
         self.URL = "https://www.michuhollib.go.kr/cnl/sch/bsch/list.do?mnidx=414"
 
     def get_book_status(self, book_title: str):
-
-        user_data_dir = f"/tmp/chrome_user_data_{time.time()}"
+        # 더 고유한 사용자 데이터 디렉토리 생성
+        user_data_dir = f"/tmp/chrome_user_data_{uuid.uuid4()}"
 
         # WebDriver 설정
         options = Options()
-        # options.add_argument("--headless")  # 필요 시 주석 해제
+        options.add_argument("--headless=new")  # headless 모드 활성화
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
         options.binary_location = "/usr/bin/chromium"
         options.add_argument(f"--user-data-dir={user_data_dir}")
+        options.add_argument("--disable-gpu")  # GPU 가속 비활성화
+        options.add_argument("--disable-software-rasterizer")  # 소프트웨어 래스터라이저 비활성화
 
         driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
