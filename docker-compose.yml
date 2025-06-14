@@ -20,6 +20,12 @@ services:
     ports:
       - "5001:5000"
     command: ["python", "main.py"]
+    network_mode: "host"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    extra_hosts:
+      - "www.michuhollib.go.kr:203.233.111.1"
 
   frontend:
     build:
