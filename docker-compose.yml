@@ -20,7 +20,6 @@ services:
     ports:
       - "5001:5000"
     command: ["python", "main.py"]
-    network_mode: "host"
     dns:
       - 8.8.8.8
       - 8.8.4.4
