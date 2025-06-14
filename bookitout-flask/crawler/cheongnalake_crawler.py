@@ -4,6 +4,14 @@ import tempfile
 import shutil
 import os
 import uuid
+import logging
+
+# 로깅 설정
+logging.basicConfig(
+    filename='/app/crawler.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,6 +27,7 @@ class CheongnaLakeLibraryCrawler:
     def get_book_status(self, book_title: str):
         # 더 고유한 사용자 데이터 디렉토리 생성
         user_data_dir = f"/tmp/chrome_user_data_{uuid.uuid4()}"
+        logging.info(f"'{book_title}' 책을 위해 청라호수도서관 크롤링 시작...")
 
         # WebDriver 설정
         options = Options()
@@ -34,37 +43,48 @@ class CheongnaLakeLibraryCrawler:
         driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
-            print(f"'{book_title}' 책을 위해 청라호수도서관 크롤링 시작...")
+            logging.info("페이지 로드 시작")
             driver.get(self.URL)
+            logging.info("페이지 로드 완료")
 
-            WebDriverWait(driver, 20).until(
+            # 페이지 로드 대기 시간 증가
+            WebDriverWait(driver, 30).until(
                 lambda d: d.execute_script("return document.readyState") == "complete"
             )
-            time.sleep(3)
+            time.sleep(5)  # 대기 시간 증가
+            logging.info("초기 페이지 로드 완료")
 
-            search_input = WebDriverWait(driver, 20).until(
+            # 검색어 입력
+            search_input = WebDriverWait(driver, 30).until(
                 EC.element_to_be_clickable((By.ID, "searchKeyword"))
             )
             search_input.clear()
             search_input.send_keys(book_title)
-            print(f"검색어 '{book_title}' 입력 완료.")
+            logging.info(f"검색어 '{book_title}' 입력 완료")
 
-            search_button = WebDriverWait(driver, 20).until(
+            # 검색 버튼 클릭
+            search_button = WebDriverWait(driver, 30).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "a.libro_search"))
             )
             search_button.click()
-            print("검색 버튼 클릭 완료.")
+            logging.info("검색 버튼 클릭 완료")
 
-            WebDriverWait(driver, 20).until(
+            # 검색 결과 대기
+            WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.ID, "bookSearchList"))
             )
-            time.sleep(3)
+            time.sleep(5)  # 대기 시간 증가
+            logging.info("검색 결과 로드 완료")
+
+            # 현재 페이지 소스 출력 (디버깅용)
+            logging.info(f"현재 페이지 소스: {driver.page_source[:500]}")  # 처음 500자만 출력
 
             book_elements = driver.find_elements(By.CSS_SELECTOR, "#bookSearchList > div > ul.prglist > li")
+            logging.info(f"검색된 책 개수: {len(book_elements)}")
             books_data = []
 
             if not book_elements:
-                print("검색 결과가 없습니다.")
+                logging.info("검색 결과가 없습니다.")
                 return []
 
             for book_element in book_elements:
@@ -160,13 +180,13 @@ class CheongnaLakeLibraryCrawler:
                     })
 
                 except Exception as e:
-                    print(f"대출 정보 파싱 중 오류: {e}")
+                    logging.error(f"대출 정보 파싱 중 오류: {e}")
                     continue
 
             return books_data
 
         except Exception as e:
-            print(f"크롤링 중 오류 발생: {e}")
+            logging.error(f"크롤링 중 오류 발생: {e}")
             return []
 
         finally:
@@ -174,6 +194,6 @@ class CheongnaLakeLibraryCrawler:
             if os.path.exists(user_data_dir):
                 try:
                     shutil.rmtree(user_data_dir)
-                    print(f"사용자 데이터 디렉토리 {user_data_dir} 삭제 완료.")
+                    logging.info(f"사용자 데이터 디렉토리 {user_data_dir} 삭제 완료.")
                 except Exception as cleanup_error:
-                    print(f"임시 디렉토리 삭제 실패: {cleanup_error}")
+                    logging.error(f"임시 디렉토리 삭제 실패: {cleanup_error}")
