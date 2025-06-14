@@ -1,5 +1,6 @@
 import time
 import re
+import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,6 +8,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+
+# 로깅 설정
+logging.basicConfig(
+    filename='/app/crawler.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 class CheongnaLakeLibraryCrawler:
     def __init__(self):
@@ -23,7 +31,7 @@ class CheongnaLakeLibraryCrawler:
         driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=options)
 
         try:
-            print(f"'{book_title}' 책을 위해 청라호수도서관 크롤링 시작...")
+            logging.info(f"'{book_title}' 책을 위해 청라호수도서관 크롤링 시작...")
             driver.get(self.URL)
 
             # 페이지가 완전히 로드될 때까지 대기
@@ -31,6 +39,7 @@ class CheongnaLakeLibraryCrawler:
                 lambda driver: driver.execute_script("return document.readyState") == "complete"
             )
             time.sleep(3)
+            logging.info("페이지 로드 완료")
 
             # 검색어 입력 필드에 책 제목 입력
             search_input = WebDriverWait(driver, 20).until(
@@ -38,11 +47,11 @@ class CheongnaLakeLibraryCrawler:
             )
             search_input.clear()
             search_input.send_keys(book_title)
-            print(f"검색어 '{book_title}' 입력 완료.")
+            logging.info(f"검색어 '{book_title}' 입력 완료")
 
             # JavaScript 함수 직접 호출
             driver.execute_script("fn_nomalKeywordSearch();")
-            print("검색 실행 완료.")
+            logging.info("검색 실행 완료")
             time.sleep(3)
 
             # 검색 결과가 로드될 때까지 대기
@@ -50,6 +59,7 @@ class CheongnaLakeLibraryCrawler:
                 EC.presence_of_element_located((By.CSS_SELECTOR, "#bookSearchList li"))
             )
             time.sleep(3)
+            logging.info("검색 결과 로드 완료")
 
             # 검색 결과 파싱
             soup = BeautifulSoup(driver.page_source, "html.parser")
@@ -57,8 +67,10 @@ class CheongnaLakeLibraryCrawler:
             books_data = []
 
             if not book_elements:
-                print("검색 결과가 없습니다.")
+                logging.info("검색 결과가 없습니다.")
                 return []
+
+            logging.info(f"검색된 책 수: {len(book_elements)}")
 
             for book_element in book_elements:
                 try:
@@ -145,15 +157,17 @@ class CheongnaLakeLibraryCrawler:
                         "interlibrary": interlibrary,
                         "image_url": image_url
                     })
+                    logging.info(f"책 정보 파싱 완료: {title}")
 
                 except Exception as e:
-                    print(f"책 정보 파싱 중 오류: {e}")
+                    logging.error(f"책 정보 파싱 중 오류: {e}")
                     continue
 
+            logging.info(f"총 {len(books_data)}개의 책 정보 수집 완료")
             return books_data
 
         except Exception as e:
-            print(f"크롤링 중 오류 발생: {e}")
+            logging.error(f"크롤링 중 오류 발생: {e}")
             return []
         finally:
             driver.quit()
