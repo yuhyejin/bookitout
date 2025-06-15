@@ -20,6 +20,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
+# 로깅 설정
+logging.basicConfig(
+    filename='/app/crawler.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 class CheongnaLakeLibraryCrawler:
     def __init__(self):
         self.URL = "https://www.michuhollib.go.kr/cnl/sch/bsch/list.do?mnidx=414"
